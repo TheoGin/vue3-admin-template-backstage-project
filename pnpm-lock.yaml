@@ -40,6 +40,9 @@ devDependencies:
   globals:
     specifier: ^15.9.0
     version: 15.9.0
+  husky:
+    specifier: ^9.1.6
+    version: 9.1.6
   postcss:
     specifier: ^8.4.47
     version: 8.4.47
@@ -2244,6 +2247,12 @@ packages:
       domhandler: 5.0.3
       domutils: 3.1.0
       entities: 4.5.0
+    dev: true
+
+  /husky@9.1.6:
+    resolution: {integrity: sha512-sqbjZKK7kf44hfdE94EoX8MZNk0n7HeW37O4YrVGCF4wzgQjp+akPAkfUK5LZ6KuR/6sqeAVuXHji+RzQgOn5A==}
+    engines: {node: '>=18'}
+    hasBin: true
     dev: true
 
   /ignore@5.3.2:
