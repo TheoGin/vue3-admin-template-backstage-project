@@ -1,11 +1,7 @@
-<template></template>
+<template>
+  <h3>新增一个标题</h3>
+</template>
 
-<script setup lang="ts">
-for (let i = 0; i < 100; i++) {
-  console.log(i)
-}
-
-let str = "本地格式化后加的一行代码";
-</script>
+<script setup lang="ts"></script>
 
 <style scoped></style>
