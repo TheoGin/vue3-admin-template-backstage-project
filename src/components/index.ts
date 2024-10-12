@@ -1,11 +1,12 @@
 // 引入项目中全部的全局组件
 import SvgIcon from './SvgIcon/index.vue'
 import Pagination from './Pagination/index.vue'
+import Category from './Category/index.vue'
 // 全局引入ElementPlus图标
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
 // 全局对象
-const allGlobalComponents = { SvgIcon, Pagination }
+const allGlobalComponents = { SvgIcon, Pagination, Category }
 // console.log(allComponents);
 /**
 {

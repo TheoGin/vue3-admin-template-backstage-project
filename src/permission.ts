@@ -28,7 +28,7 @@ router.beforeEach(async (to: any, from: any, next: any) => {
 
   //获取用户名字
   let username = userStore.username
-  console.log(username)
+  // console.log(username)
   //用户登录成功: 不可以访问login[指向首页],其余的路由可以访问
   if (token) {
     //登录成功,访问login,不能访问,指向首页
@@ -44,8 +44,8 @@ router.beforeEach(async (to: any, from: any, next: any) => {
         try {
           //获取用户信息
           const res = await userStore.userInfo()
-          console.log(res)
-          console.log(111)
+          // console.log(res)
+          // console.log(111)
           //万一:刷新的时候是异步路由,有可能获取到用户信息、异步路由还没有加载完毕,出现空白的效果
           next({ ...to })
         } catch (error) {

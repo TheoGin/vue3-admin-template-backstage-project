@@ -91,18 +91,18 @@ export const constantRoutes = [
     ],
   },
   {
-    path: '/goods',
+    path: '/product',
     component: () => import('@/layout/index.vue'),
-    name: 'Goods',
+    name: 'Product',
     meta: {
       title: '商品管理',
       icon: 'ShoppingCartFull',
     },
-    redirect: '/goods/trademark',
+    redirect: '/product/trademark',
     children: [
       {
-        path: '/goods/trademark',
-        component: () => import('@/views/goods/trademark/index.vue'),
+        path: '/product/trademark',
+        component: () => import('@/views/product/trademark/index.vue'),
         name: 'Trademark',
         meta: {
           title: '品牌管理',
@@ -110,8 +110,8 @@ export const constantRoutes = [
         },
       },
       {
-        path: '/goods/attr',
-        component: () => import('@/views/goods/attr/index.vue'),
+        path: '/product/attr',
+        component: () => import('@/views/product/attr/index.vue'),
         name: 'Attr',
         meta: {
           title: '属性管理',
@@ -119,8 +119,8 @@ export const constantRoutes = [
         },
       },
       {
-        path: '/goods/spu',
-        component: () => import('@/views/goods/spu/index.vue'),
+        path: '/product/spu',
+        component: () => import('@/views/product/spu/index.vue'),
         name: 'Spu',
         meta: {
           title: 'SPU管理',
@@ -128,8 +128,8 @@ export const constantRoutes = [
         },
       },
       {
-        path: '/goods/sku',
-        component: () => import('@/views/goods/sku/index.vue'),
+        path: '/product/sku',
+        component: () => import('@/views/product/sku/index.vue'),
         name: 'Sku',
         meta: {
           title: 'SKU管理',

@@ -1,7 +1,7 @@
 <template>
   <div class="layout_container">
     <!-- <div class="layout_slider" :class="{fold: layoutSettingStore.fold}"> -->
-    <div class="layout_slider">
+    <div class="layout_slider" :class="{ fold: layoutSettingStore.fold ? true : false }">
       <Logo />
       <!-- 左侧菜单栏 -->
       <el-scrollbar class="scroll_bar">
@@ -79,9 +79,9 @@ export default {
     }
 
     // 与layout_slider写在同个标签里，如果有fold这个类名
-    // &.fold {
-    //     width: $base-menu-min-width;
-    // }
+     &.fold {
+         width: $base-menu-min-width;
+     }
   }
 
   .layout_tabbar {
@@ -104,7 +104,7 @@ export default {
     left: $base-menu-width;
     width: calc(100% - $base-menu-width);
     height: calc(100vh - $base-tabbar-height);
-    background: cyan;
+    // background: cyan;
     padding: 20px;
     overflow: auto;
     transition: all 0.3s;

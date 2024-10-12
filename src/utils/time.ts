@@ -1,7 +1,7 @@
 export const getTime = () => {
   let message = ''
   const hour = new Date().getHours()
-  console.log(hour)
+  // console.log(hour)
   if (hour <= 9) {
     message = '早上'
   } else if (hour <= 12) {
