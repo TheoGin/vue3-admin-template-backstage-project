@@ -11,10 +11,10 @@ export interface UserState {
 
 // 分类仓库的state返回类型
 export interface CategoryState {
-  category1Arr: CategoryObj[],
-  c1Id: number | string,
-  category2Arr: CategoryObj[],
-  c2Id: number | string,
-  category3Arr: CategoryObj[],
-  c3Id: number | string,
+  category1Arr: CategoryObj[]
+  c1Id: number | string
+  category2Arr: CategoryObj[]
+  c2Id: number | string
+  category3Arr: CategoryObj[]
+  c3Id: number | string
 }

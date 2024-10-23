@@ -6,18 +6,20 @@ import { LoginFormData, LoginResponceData, UserInfoResponceData } from './type'
 enum API {
   LOGIN_URL = '/admin/acl/index/login',
   USERINFO_URL = '/admin/acl/index/info',
-  LOGOUT_URL = '/admin/acl/index/logout'
+  LOGOUT_URL = '/admin/acl/index/logout',
 }
 
 //登录接口
-export const reqLogin = (data: LoginFormData) => request.post<any, LoginResponceData>(API.LOGIN_URL, data)
+export const reqLogin = (data: LoginFormData) =>
+  request.post<any, LoginResponceData>(API.LOGIN_URL, data)
 
 //获取用户信息
 // 第一个 any: 代表请求参数的类型。第二个 any: 代表响应数据的类型。
-export const reqUserInfo = () => request.get<any, UserInfoResponceData>(API.USERINFO_URL)
+export const reqUserInfo = () =>
+  request.get<any, UserInfoResponceData>(API.USERINFO_URL)
 
 //退出登录接口
-export const reqLogout = () => request.post<any,any>(API.LOGOUT_URL)
+export const reqLogout = () => request.post<any, any>(API.LOGOUT_URL)
 
 // import type {
 //   LoginFormData,

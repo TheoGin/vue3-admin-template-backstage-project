@@ -1,6 +1,10 @@
 import { defineStore } from 'pinia'
-import { reqLogin, reqLogout  } from '@/api/user'
-import type { LoginResponceData, LoginFormData, UserInfoResponceData } from '@/api/user/type'
+import { reqLogin, reqLogout } from '@/api/user'
+import type {
+  LoginResponceData,
+  LoginFormData,
+  UserInfoResponceData,
+} from '@/api/user/type'
 import type { UserState } from './types/type'
 import { SET_TOKEN, GET_TOKEN, REMOVE_TOKEN } from '@/utils/token'
 import { constantRoutes } from '@/router/routes'
@@ -26,7 +30,8 @@ let useUserStore = defineStore('user', {
     },
     async userInfo() {
       this.username = 'admin'
-      this.avatar = 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'
+      this.avatar =
+        'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'
       return 'ok'
     },
     // async userLogin(loginForm: LoginFormData) {
@@ -55,16 +60,16 @@ let useUserStore = defineStore('user', {
     // 退出登录
     async userLogout() {
       //退出登录请求
-      const res: any = await reqLogout();
+      const res: any = await reqLogout()
       // console.log(res);
-      if(res.code === 200){
+      if (res.code === 200) {
         //目前没有mock接口:退出登录接口(通知服务器本地用户唯一标识失效)
         this.token = ''
         REMOVE_TOKEN()
         this.username = ''
         this.avatar = ''
         return 'ok'
-      }else {
+      } else {
         return Promise.reject(new Error(res.message))
       }
     },
