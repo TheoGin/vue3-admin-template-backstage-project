@@ -31,7 +31,11 @@
         </el-select>
       </el-form-item>
       <el-form-item label="三级分类">
-        <el-select style="width: 240px" v-model="categoryStore.c3Id"  :disabled="scene == 0 ? false : true">
+        <el-select
+          style="width: 240px"
+          v-model="categoryStore.c3Id"
+          :disabled="scene == 0 ? false : true"
+        >
           <el-option
             v-for="(c3, index) in categoryStore.category3Arr"
             :label="c3.name"
