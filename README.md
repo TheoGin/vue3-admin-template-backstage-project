@@ -1,5 +1,3 @@
-# Vue 3 + TypeScript + Vite
+Vue3通用后台管理系统项目,包含运营平台项目模板从0到1开发，以及数据大屏幕、权限等业务。
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
-
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+技术栈包含***:vue3 + TypeScript + vue-router + pinia + element-plus + axios + echarts***等技术栈。
