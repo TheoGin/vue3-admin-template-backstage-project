@@ -49,14 +49,14 @@
         <h3>添加用户</h3>
       </template>
       <!-- 抽屉主体 -->
-      <el-form>
-        <el-form-item label="用户姓名">
+      <el-form :model="userParamsForm" :rules="userParamsRules" ref="userParamsFormRef">
+        <el-form-item label="用户姓名" prop="username">
           <el-input v-model="userParamsForm.username" placeholder="请输入用户姓名" />
         </el-form-item>
-        <el-form-item label="用户昵称">
+        <el-form-item label="用户昵称" prop="name">
           <el-input v-model="userParamsForm.name" placeholder="请输入用户昵称" />
         </el-form-item>
-        <el-form-item label="用户密码">
+        <el-form-item label="用户密码" prop="password">
           <el-input v-model="userParamsForm.password" placeholder="请输入用户密码" />
         </el-form-item>
       </el-form>
@@ -71,11 +71,11 @@
 
 
 <script setup lang="ts">
-import { ref, onMounted, reactive } from 'vue'
+import { ref, onMounted, reactive, nextTick } from 'vue'
 import type { UserListResponseData, User } from '@/api/acl/user/type'
 import { reqGetUserList, reqAddOrUpdateUser } from '@/api/acl/user'
 import { ElMessage } from 'element-plus'
-
+import type { FormRules, FormInstance } from 'element-plus'
 // 定义用户名变量
 const username = ref<string>('')
 
@@ -96,6 +96,9 @@ const userParamsForm = reactive<User>({
   name: '',
 })
 
+// 定义表单ref
+const userParamsFormRef = ref<FormInstance>()
+
 // 处理添加用户
 const handleAddUser = () => {
   // 清空表单数据
@@ -105,6 +108,13 @@ const handleAddUser = () => {
     name: '',
   })
   drawer.value = true
+
+  // 清空表单验证
+  nextTick(() => {
+    userParamsFormRef.value?.clearValidate('username')
+    userParamsFormRef.value?.clearValidate('password')
+    userParamsFormRef.value?.clearValidate('name')
+  })
 }
 
 // 处理编辑用户
@@ -134,6 +144,9 @@ const handleSizeChange = (size: number) => {
 
 // 处理确定按钮
 const handleConfirm = async () => {
+  // 表单验证
+  await userParamsFormRef.value?.validate()
+
   const result: any = await reqAddOrUpdateUser(userParamsForm)
   console.log('result', result)
   if (result.code === 200) {
@@ -144,6 +157,8 @@ const handleConfirm = async () => {
     // 重新获取用户列表。如果存在id，则停留在当前页，否则跳到第一页
     getUserList(userParamsForm.id ? currentPage.value : 1)
   } else {
+    // 关闭抽屉
+    drawer.value = false
     // 添加或更新失败
     ElMessage.error(userParamsForm.id ? '更新用户失败' : '添加用户失败')
   }
@@ -153,6 +168,41 @@ const handleConfirm = async () => {
 const handleCancel = () => {
   drawer.value = false
 }
+
+// 校验用户名
+const validateUsername = (rule: any, value: any, callback: any) => {
+  if (value.length < 5 || value.length > 18) {
+    callback(new Error('用户名长度必须在5-18位之间'))
+  } else {
+    callback()
+  }
+}
+
+// 校验密码
+const validatePassword = (rule: any, value: any, callback: any) => {
+  if (value.length < 6 || value.length > 18) {
+    callback(new Error('密码长度必须在6-18位之间'))
+  } else {
+    callback()
+  }
+}
+
+// 校验昵称
+const validateName = (rule: any, value: any, callback: any) => {
+  if (value.length < 5 || value.length > 10) {
+    callback(new Error('昵称长度必须在5-10位之间'))
+  } else {
+    callback()
+  }
+}
+
+// 定义表单验证规则
+const userParamsRules = reactive<FormRules>({
+  username: [{ required: true, trigger: 'blur', validator: validateUsername  }],
+  password: [{ required: true, trigger: 'blur', validator: validatePassword }],
+  name: [{ required: true, trigger: 'blur', validator: validateName }],
+})
+
 
 onMounted(() => {
   getUserList()
