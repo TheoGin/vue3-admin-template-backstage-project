@@ -46,7 +46,7 @@
       <!-- 抽屉头部 -->
       <template #header>
         <!-- 需要动态展示 -->
-        <h3>添加用户</h3>
+        <h3>{{ userParamsForm.id ? '编辑用户' : '添加用户' }}</h3>
       </template>
       <!-- 抽屉主体 -->
       <el-form :model="userParamsForm" :rules="userParamsRules" ref="userParamsFormRef">
