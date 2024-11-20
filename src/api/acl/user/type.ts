@@ -8,13 +8,13 @@ interface ResponseData {
 // 定义用户列表数据类型
 export interface User {
   id?: number
+  createTime?: string
+  updateTime?: string
   username?: string
   password?: string
   name?: string
-  createTime: string
-  updateTime: string
+  phone: null
   roleName: string
-  remark: string
 }
 
 // 定义用户列表返回数据类型

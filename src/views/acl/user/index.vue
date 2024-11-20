@@ -51,19 +51,19 @@
       <!-- 抽屉主体 -->
       <el-form>
         <el-form-item label="用户姓名">
-          <el-input placeholder="请输入用户姓名" />
+          <el-input v-model="userParamsForm.username" placeholder="请输入用户姓名" />
         </el-form-item>
         <el-form-item label="用户昵称">
-          <el-input placeholder="请输入用户昵称" />
+          <el-input v-model="userParamsForm.name" placeholder="请输入用户昵称" />
         </el-form-item>
         <el-form-item label="用户密码">
-          <el-input placeholder="请输入用户密码" />
+          <el-input v-model="userParamsForm.password" placeholder="请输入用户密码" />
         </el-form-item>
       </el-form>
       <!-- 抽屉底部 -->
       <template #footer>
-        <el-button type="primary">确定</el-button>
-        <el-button type="default">取消</el-button>
+        <el-button type="primary" @click="handleConfirm">确定</el-button>
+        <el-button type="default" @click="handleCancel">取消</el-button>
       </template>
     </el-drawer>
   </div>
@@ -71,9 +71,10 @@
 
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, reactive } from 'vue'
 import type { UserListResponseData, User } from '@/api/acl/user/type'
-import { reqGetUserList } from '@/api/acl/user'
+import { reqGetUserList, reqAddOrUpdateUser } from '@/api/acl/user'
+import { ElMessage } from 'element-plus'
 
 // 定义用户名变量
 const username = ref<string>('')
@@ -88,9 +89,21 @@ const total = ref<number>(0)
 
 // 定义抽屉变量
 const drawer = ref<boolean>(false)
+// 收集用户表单数据
+const userParamsForm = reactive<User>({
+  username: '',
+  password: '',
+  name: '',
+})
 
 // 处理添加用户
 const handleAddUser = () => {
+  // 清空表单数据
+  Object.assign(userParamsForm, {
+    username: '',
+    password: '',
+    name: '',
+  })
   drawer.value = true
 }
 
@@ -106,7 +119,7 @@ const getUserList = async (pager = 1) => {
     currentPage.value,
     pageSize.value,
   )
-  console.log('result', result)
+  // console.log('result', result)
   if (result.code === 200) {
     tableData.value = result.data.records
     total.value = result.data.total
@@ -117,6 +130,28 @@ const getUserList = async (pager = 1) => {
 const handleSizeChange = (size: number) => {
   pageSize.value = size
   getUserList()
+}
+
+// 处理确定按钮
+const handleConfirm = async () => {
+  const result: any = await reqAddOrUpdateUser(userParamsForm)
+  console.log('result', result)
+  if (result.code === 200) {
+    // 添加或更新成功
+    ElMessage.success(userParamsForm.id ? '更新用户成功' : '添加用户成功')
+    // 关闭抽屉
+    drawer.value = false
+    // 重新获取用户列表。如果存在id，则停留在当前页，否则跳到第一页
+    getUserList(userParamsForm.id ? currentPage.value : 1)
+  } else {
+    // 添加或更新失败
+    ElMessage.error(userParamsForm.id ? '更新用户失败' : '添加用户失败')
+  }
+}
+
+// 处理取消按钮
+const handleCancel = () => {
+  drawer.value = false
 }
 
 onMounted(() => {
