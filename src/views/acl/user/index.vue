@@ -56,7 +56,7 @@
         <el-form-item label="用户昵称" prop="name">
           <el-input v-model="userParamsForm.name" placeholder="请输入用户昵称" />
         </el-form-item>
-        <el-form-item label="用户密码" prop="password">
+        <el-form-item label="用户密码" prop="password" v-if="!userParamsForm.id">
           <el-input v-model="userParamsForm.password" placeholder="请输入用户密码" />
         </el-form-item>
       </el-form>
@@ -103,6 +103,7 @@ const userParamsFormRef = ref<FormInstance>()
 const handleAddUser = () => {
   // 清空表单数据
   Object.assign(userParamsForm, {
+    id: 0,
     username: '',
     password: '',
     name: '',
@@ -120,6 +121,8 @@ const handleAddUser = () => {
 // 处理编辑用户
 const handleEditUser = (row: User) => {
   drawer.value = true
+  // 将行数据赋值给表单数据
+  Object.assign(userParamsForm, row)
 }
 
 // 获取用户列表。pager 当前页码，不传默认值为 1
@@ -156,6 +159,8 @@ const handleConfirm = async () => {
     drawer.value = false
     // 重新获取用户列表。如果存在id，则停留在当前页，否则跳到第一页
     getUserList(userParamsForm.id ? currentPage.value : 1)
+    // 浏览器刷新一次
+    window.location.reload()
   } else {
     // 关闭抽屉
     drawer.value = false
