@@ -1,6 +1,6 @@
 // Sku 接口
-import request from '@/utils/request';
-import type { SkuListResponseData } from './type';
+import request from '@/utils/request'
+import type { SkuListResponseData } from './type'
 
 // 统一管理 SKU 接口
 enum API {
@@ -17,16 +17,21 @@ enum API {
 }
 
 // 获取 SKU 列表
-export const reqGetSkuList = (page: number, limit: number) => request.get<any, SkuListResponseData>(API.SKU_LIST + `${page}/${limit}`);
+export const reqGetSkuList = (page: number, limit: number) =>
+  request.get<any, SkuListResponseData>(API.SKU_LIST + `${page}/${limit}`)
 
 // 上架SKU
-export const reqOnSaleSku = (skuId: number | string) => request.get<any, any>(API.ON_SALE_SKU + skuId);
+export const reqOnSaleSku = (skuId: number | string) =>
+  request.get<any, any>(API.ON_SALE_SKU + skuId)
 
 // 下架SKU
-export const reqCancelSaleSku = (skuId: number | string) => request.get<any, any>(API.CANCEL_SALE_SKU + skuId);
+export const reqCancelSaleSku = (skuId: number | string) =>
+  request.get<any, any>(API.CANCEL_SALE_SKU + skuId)
 
 // 获取SKU商品信息
-export const reqGetSkuInfo = (skuId: number | string) => request.get<any, any>(API.SKU_INFO + skuId);
+export const reqGetSkuInfo = (skuId: number | string) =>
+  request.get<any, any>(API.SKU_INFO + skuId)
 
 // 删除SKU
-export const reqDeleteSku = (skuId: number | string) => request.delete<any, any>(API.DELETE_SKU + skuId);
+export const reqDeleteSku = (skuId: number | string) =>
+  request.delete<any, any>(API.DELETE_SKU + skuId)

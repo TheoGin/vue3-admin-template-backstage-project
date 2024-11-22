@@ -11,12 +11,15 @@ enum API {
 }
 
 // 获取用户列表
-export const reqGetUserList = (page: number, limit: number) => request.get<any, UserListResponseData>(API.GET_USER_LIST_URL + `${page}/${limit}`)
+export const reqGetUserList = (page: number, limit: number) =>
+  request.get<any, UserListResponseData>(
+    API.GET_USER_LIST_URL + `${page}/${limit}`,
+  )
 
 // 添加用户或更新用户
 export const reqAddOrUpdateUser = (data: User) => {
   // 判断是否存在id，如果存在则更新，否则添加
-  if(data.id) {
+  if (data.id) {
     // 更新用户
     return request.put<any, any>(API.UPDATE_USER_URL, data)
   } else {

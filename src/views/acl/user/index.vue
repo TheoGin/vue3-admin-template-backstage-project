@@ -12,20 +12,61 @@
       </el-form>
     </el-card>
     <el-card style="margin: 10px 0">
-      <el-button type="primary" icon="Plus" @click="handleAddUser">添加用户</el-button>
+      <el-button type="primary" icon="Plus" @click="handleAddUser">
+        添加用户
+      </el-button>
       <el-button type="danger" icon="Delete">批量删除</el-button>
       <el-table :data="tableData" border style="margin: 10px 0">
         <el-table-column type="selection" width="40" />
-        <el-table-column align="center" type="index" label="#" width="45" prop="id" />
+        <el-table-column
+          align="center"
+          type="index"
+          label="#"
+          width="45"
+          prop="id"
+        />
         <el-table-column align="center" label="id" prop="id" width="80" />
-        <el-table-column align="center" label="用户名称" prop="username" width="100" :show-overflow-tooltip="true" />
-        <el-table-column align="center" label="用户角色" prop="roleName" width="270" :show-overflow-tooltip="true"  />
-        <el-table-column align="center" label="创建时间" prop="createTime" width="180" :show-overflow-tooltip="true"  />
-        <el-table-column align="center" label="更新时间" prop="updateTime" width="180" :show-overflow-tooltip="true" />
-        <el-table-column align="center" label="操作" >
-          <template #="{row, $index}">
-            <el-button type="primary" size="small" icon="User">分类角色</el-button>
-            <el-button type="warning" size="small" icon="Edit" @click="handleEditUser(row)">编辑</el-button>
+        <el-table-column
+          align="center"
+          label="用户名称"
+          prop="username"
+          width="100"
+          :show-overflow-tooltip="true"
+        />
+        <el-table-column
+          align="center"
+          label="用户角色"
+          prop="roleName"
+          width="270"
+          :show-overflow-tooltip="true"
+        />
+        <el-table-column
+          align="center"
+          label="创建时间"
+          prop="createTime"
+          width="180"
+          :show-overflow-tooltip="true"
+        />
+        <el-table-column
+          align="center"
+          label="更新时间"
+          prop="updateTime"
+          width="180"
+          :show-overflow-tooltip="true"
+        />
+        <el-table-column align="center" label="操作">
+          <template #="{ row, $index }">
+            <el-button type="primary" size="small" icon="User">
+              分类角色
+            </el-button>
+            <el-button
+              type="warning"
+              size="small"
+              icon="Edit"
+              @click="handleEditUser(row)"
+            >
+              编辑
+            </el-button>
             <el-button type="danger" size="small" icon="Delete">删除</el-button>
           </template>
         </el-table-column>
@@ -49,15 +90,32 @@
         <h3>{{ userParamsForm.id ? '编辑用户' : '添加用户' }}</h3>
       </template>
       <!-- 抽屉主体 -->
-      <el-form :model="userParamsForm" :rules="userParamsRules" ref="userParamsFormRef">
+      <el-form
+        :model="userParamsForm"
+        :rules="userParamsRules"
+        ref="userParamsFormRef"
+      >
         <el-form-item label="用户姓名" prop="username">
-          <el-input v-model="userParamsForm.username" placeholder="请输入用户姓名" />
+          <el-input
+            v-model="userParamsForm.username"
+            placeholder="请输入用户姓名"
+          />
         </el-form-item>
         <el-form-item label="用户昵称" prop="name">
-          <el-input v-model="userParamsForm.name" placeholder="请输入用户昵称" />
+          <el-input
+            v-model="userParamsForm.name"
+            placeholder="请输入用户昵称"
+          />
         </el-form-item>
-        <el-form-item label="用户密码" prop="password" v-if="!userParamsForm.id">
-          <el-input v-model="userParamsForm.password" placeholder="请输入用户密码" />
+        <el-form-item
+          label="用户密码"
+          prop="password"
+          v-if="!userParamsForm.id"
+        >
+          <el-input
+            v-model="userParamsForm.password"
+            placeholder="请输入用户密码"
+          />
         </el-form-item>
       </el-form>
       <!-- 抽屉底部 -->
@@ -68,7 +126,6 @@
     </el-drawer>
   </div>
 </template>
-
 
 <script setup lang="ts">
 import { ref, onMounted, reactive, nextTick } from 'vue'
@@ -157,8 +214,8 @@ const handleConfirm = async () => {
     ElMessage.success(userParamsForm.id ? '更新用户成功' : '添加用户成功')
     // 关闭抽屉
     drawer.value = false
-    // 重新获取用户列表。如果存在id，则停留在当前页，否则跳到第一页
-    getUserList(userParamsForm.id ? currentPage.value : 1)
+    // // 重新获取用户列表。如果存在id，则停留在当前页，否则跳到第一页
+    // getUserList(userParamsForm.id ? currentPage.value : 1)
     // 浏览器刷新一次
     window.location.reload()
   } else {
@@ -203,11 +260,10 @@ const validateName = (rule: any, value: any, callback: any) => {
 
 // 定义表单验证规则
 const userParamsRules = reactive<FormRules>({
-  username: [{ required: true, trigger: 'blur', validator: validateUsername  }],
+  username: [{ required: true, trigger: 'blur', validator: validateUsername }],
   password: [{ required: true, trigger: 'blur', validator: validatePassword }],
   name: [{ required: true, trigger: 'blur', validator: validateName }],
 })
-
 
 onMounted(() => {
   getUserList()
