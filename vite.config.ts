@@ -43,7 +43,7 @@ export default defineConfig(({ command, mode }) => {
       proxy: {
         // [env.VITE_APP_BASE_API] 动态设置了代理的键名
         [env.VITE_APP_BASE_API]: {
-        // '/api/admin/acl': {
+          // '/api/admin/acl': {
           //获取数据的服务器地址设置
           target: env.VITE_SERVE,
           //需要代理跨域

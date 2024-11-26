@@ -136,21 +136,33 @@
       </template>
       <template #default>
         <div>
-          <el-checkbox
-            v-model="checkAll"
-            :indeterminate="isIndeterminate"
-            @change="handleCheckAllChange"
-          >
-            全选
-          </el-checkbox>
-          <el-checkbox-group
-            v-model="checkedCities"
-            @change="handleCheckedCitiesChange"
-          >
-            <el-checkbox v-for="city in cities" :key="city" :label="city" :value="city">
-              {{ city }}
-            </el-checkbox>
-          </el-checkbox-group>
+          <el-form>
+            <el-form-item label="用户姓名">
+              <el-input v-model="userParamsForm.username" :disabled="true" />
+            </el-form-item>
+            <el-form-item label="职位列表">
+              <el-checkbox
+                v-model="checkAll"
+                :indeterminate="isIndeterminate"
+                @change="handleCheckAllChange"
+              >
+                全选
+              </el-checkbox>
+              <el-checkbox-group
+                v-model="checkedCities"
+                @change="handleCheckedCitiesChange"
+              >
+                <el-checkbox
+                  v-for="city in cities"
+                  :key="city"
+                  :label="city"
+                  :value="city"
+                >
+                  {{ city }}
+                </el-checkbox>
+              </el-checkbox-group>
+            </el-form-item>
+          </el-form>
         </div>
       </template>
       <template #footer>
@@ -331,8 +343,12 @@ function confirmClick() {
       // catch error
     })
 }
+// 处理分配角色
 const handleAssignRole = (row: User) => {
   console.log('row', row)
+  // 将行数据赋值给表单数据
+  Object.assign(userParamsForm, row)
+  // 打开分配角色抽屉
   assignRoleDrawer.value = true
 }
 const checkAll = ref(false)
