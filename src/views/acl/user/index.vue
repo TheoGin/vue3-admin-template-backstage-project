@@ -56,8 +56,13 @@
         />
         <el-table-column align="center" label="操作">
           <template #="{ row, $index }">
-            <el-button type="primary" size="small" icon="User">
-              分类角色
+            <el-button
+              type="primary"
+              size="small"
+              icon="User"
+              @click="handleAssignRole(row)"
+            >
+              分配角色
             </el-button>
             <el-button
               type="warning"
@@ -124,6 +129,37 @@
         <el-button type="default" @click="handleCancel">取消</el-button>
       </template>
     </el-drawer>
+    <!-- 分配角色抽屉 -->
+    <el-drawer v-model="assignRoleDrawer" :direction="direction">
+      <template #header>
+        <h4>分配角色</h4>
+      </template>
+      <template #default>
+        <div>
+          <el-checkbox
+            v-model="checkAll"
+            :indeterminate="isIndeterminate"
+            @change="handleCheckAllChange"
+          >
+            全选
+          </el-checkbox>
+          <el-checkbox-group
+            v-model="checkedCities"
+            @change="handleCheckedCitiesChange"
+          >
+            <el-checkbox v-for="city in cities" :key="city" :label="city" :value="city">
+              {{ city }}
+            </el-checkbox>
+          </el-checkbox-group>
+        </div>
+      </template>
+      <template #footer>
+        <div style="flex: auto">
+          <el-button @click="cancelClick">取消</el-button>
+          <el-button type="primary" @click="confirmClick">确定</el-button>
+        </div>
+      </template>
+    </el-drawer>
   </div>
 </template>
 
@@ -131,8 +167,8 @@
 import { ref, onMounted, reactive, nextTick } from 'vue'
 import type { UserListResponseData, User } from '@/api/acl/user/type'
 import { reqGetUserList, reqAddOrUpdateUser } from '@/api/acl/user'
-import { ElMessage } from 'element-plus'
-import type { FormRules, FormInstance } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import type { FormRules, FormInstance, DrawerProps } from 'element-plus'
 // 定义用户名变量
 const username = ref<string>('')
 
@@ -155,6 +191,11 @@ const userParamsForm = reactive<User>({
 
 // 定义表单ref
 const userParamsFormRef = ref<FormInstance>()
+
+// 定义分配角色弹窗变量
+const assignRoleDrawer = ref<boolean>(false)
+const direction = ref<DrawerProps['direction']>('rtl')
+const radio1 = ref('Option 1')
 
 // 处理添加用户
 const handleAddUser = () => {
@@ -268,6 +309,46 @@ const userParamsRules = reactive<FormRules>({
 onMounted(() => {
   getUserList()
 })
+
+const handleClose = (done: () => void) => {
+  ElMessageBox.confirm('Are you sure you want to close this?')
+    .then(() => {
+      done()
+    })
+    .catch(() => {
+      // catch error
+    })
+}
+function cancelClick() {
+  assignRoleDrawer.value = false
+}
+function confirmClick() {
+  ElMessageBox.confirm(`Are you confirm to chose ${radio1.value} ?`)
+    .then(() => {
+      assignRoleDrawer.value = false
+    })
+    .catch(() => {
+      // catch error
+    })
+}
+const handleAssignRole = (row: User) => {
+  console.log('row', row)
+  assignRoleDrawer.value = true
+}
+const checkAll = ref(false)
+const isIndeterminate = ref(true)
+const checkedCities = ref(['Shanghai', 'Beijing'])
+const cities = ['Shanghai', 'Beijing', 'Guangzhou', 'Shenzhen']
+
+const handleCheckAllChange = (val: boolean) => {
+  checkedCities.value = val ? cities : []
+  isIndeterminate.value = false
+}
+const handleCheckedCitiesChange = (value: string[]) => {
+  const checkedCount = value.length
+  checkAll.value = checkedCount === cities.length
+  isIndeterminate.value = checkedCount > 0 && checkedCount < cities.length
+}
 </script>
 
 <style scoped lang="scss">
