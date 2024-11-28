@@ -1,5 +1,9 @@
 import request from '@/utils/request'
-import type { UserListResponseData, User } from './type'
+import type {
+  UserListResponseData,
+  User,
+  AssignRoleResponseData,
+} from './type'
 
 enum API {
   // 获取用户列表的接口URL
@@ -8,6 +12,8 @@ enum API {
   ADD_USER_URL = '/admin/acl/user/save',
   // 更新用户的接口URL
   UPDATE_USER_URL = '/admin/acl/user/update',
+  // 获取已有分配角色列表和所有角色列表的接口URL
+  ASSIGN_ROLE_URL = '/admin/acl/user/toAssign/',
 }
 
 // 获取用户列表
@@ -27,3 +33,8 @@ export const reqAddOrUpdateUser = (data: User) => {
     return request.post<any, any>(API.ADD_USER_URL, data)
   }
 }
+
+// 获取已有分配角色列表和所有角色列表
+export const reqAssignRoleListAndAllRoleList = (userId: number) =>
+  request.get<any, AssignRoleResponseData>(API.ASSIGN_ROLE_URL + `${userId}`)
+

@@ -149,16 +149,15 @@
                 全选
               </el-checkbox>
               <el-checkbox-group
-                v-model="checkedCities"
-                @change="handleCheckedCitiesChange"
+                v-model="checkedRoleList"
+                @change="handlecheckedRoleListChange"
               >
                 <el-checkbox
-                  v-for="city in cities"
-                  :key="city"
-                  :label="city"
-                  :value="city"
+                  v-for="role in allRoleList"
+                  :key="role.id"
+                  :label="role.roleName"
                 >
-                  {{ city }}
+                  {{ role.roleName }}
                 </el-checkbox>
               </el-checkbox-group>
             </el-form-item>
@@ -177,8 +176,8 @@
 
 <script setup lang="ts">
 import { ref, onMounted, reactive, nextTick } from 'vue'
-import type { UserListResponseData, User } from '@/api/acl/user/type'
-import { reqGetUserList, reqAddOrUpdateUser } from '@/api/acl/user'
+import type { UserListResponseData, User, AllRole, AssignRoleResponseData, Role } from '@/api/acl/user/type'
+import { reqGetUserList, reqAddOrUpdateUser, reqAssignRoleListAndAllRoleList } from '@/api/acl/user'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { FormRules, FormInstance, DrawerProps } from 'element-plus'
 // 定义用户名变量
@@ -344,26 +343,46 @@ function confirmClick() {
     })
 }
 // 处理分配角色
-const handleAssignRole = (row: User) => {
+const handleAssignRole = async (row: User) => {
   console.log('row', row)
   // 将行数据赋值给表单数据
   Object.assign(userParamsForm, row)
+  // 获取所有角色列表
+  const result: AssignRoleResponseData = await reqAssignRoleListAndAllRoleList(row.id)
+  console.log('result', result)
+  if (result.code === 200) {
+    allRoleList.value = result.data.allRolesList
+    checkedRoleList.value = result.data.assignRoles.map((role: Role) => role.roleName)
+    
+    // 更新全选和半选状态
+    const checkedCount = checkedRoleList.value.length
+    checkAll.value = checkedCount === allRoleList.value.length
+    isIndeterminate.value = checkedCount > 0 && checkedCount < allRoleList.value.length
+  }
+
   // 打开分配角色抽屉
   assignRoleDrawer.value = true
 }
+// 全选和半选
 const checkAll = ref(false)
+// 是否半选
 const isIndeterminate = ref(true)
-const checkedCities = ref(['Shanghai', 'Beijing'])
-const cities = ['Shanghai', 'Beijing', 'Guangzhou', 'Shenzhen']
-
+// 职位列表
+const checkedRoleList = ref<string[]>([])
+// 所有职位列表
+const allRoleList = ref<AllRole>([])
+// 处理全选和半选
 const handleCheckAllChange = (val: boolean) => {
-  checkedCities.value = val ? cities : []
+  console.log('val', val)
+  // 获取所有角色的 roleName 作为选中值
+  checkedRoleList.value = val ? allRoleList.value.map((item: AllRole) => item.roleName) : []
   isIndeterminate.value = false
 }
-const handleCheckedCitiesChange = (value: string[]) => {
+// 处理半选
+const handlecheckedRoleListChange = (value: string[]) => {
   const checkedCount = value.length
-  checkAll.value = checkedCount === cities.length
-  isIndeterminate.value = checkedCount > 0 && checkedCount < cities.length
+  checkAll.value = checkedCount === allRoleList.value.length
+  isIndeterminate.value = checkedCount > 0 && checkedCount < allRoleList.value.length
 }
 </script>
 

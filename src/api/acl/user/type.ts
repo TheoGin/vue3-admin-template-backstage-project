@@ -27,3 +27,24 @@ export type UserListResponseData = ResponseData & {
     pages: number
   }
 }
+
+// 定义角色数据类型
+export interface Role {
+  id?: number
+  createTime?: string
+  updateTime?: string
+  roleName: string
+  remark: null
+}
+
+// 定义所有角色数据类型
+export type AllRole = Role[]
+
+// 定义分配角色返回数据类型
+export interface AssignRoleResponseData extends ResponseData {
+  data: {
+    assignRoles: AllRole
+    allRolesList: AllRole
+  }
+}
+
